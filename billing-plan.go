@@ -28,8 +28,8 @@ type (
 )
 
 // CreateBillingPlan creates a billingplan in Paypal
-func (c *Client) CreateBillingPlan(p BillingPlan) (*CreateBillingPlanResp, error) {
-	req, err := NewRequest("POST", fmt.Sprintf("%s/plans/plan", c.APIBase), p)
+func (c *Client) CreateBillingPlan(p *BillingPlan) (*CreateBillingPlanResp, error) {
+	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/billing-plans", c.APIBase), p)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (c *Client) ExecuteBillingPlan(planID, payerID string, transactions []Trans
 
 // GetBillingPlan fetches a billingplan in Paypal
 func (c *Client) GetBillingPlan(id string) (*BillingPlan, error) {
-	req, err := NewRequest("GET", fmt.Sprintf("%s/plans/plan/%s", c.APIBase, id), nil)
+	req, err := NewRequest("GET", fmt.Sprintf("%s/payments/billing-plans/%s", c.APIBase, id), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func (c *Client) GetBillingPlan(id string) (*BillingPlan, error) {
 
 // ListBillingPlans retrieve billingplans resources from Paypal
 func (c *Client) ListBillingPlans(filter map[string]string) ([]BillingPlan, error) {
-	req, err := NewRequest("GET", fmt.Sprintf("%s/plans/plan/", c.APIBase), nil)
+	req, err := NewRequest("GET", fmt.Sprintf("%s/payments/billing-plans", c.APIBase), nil)
 	if err != nil {
 		return nil, err
 	}

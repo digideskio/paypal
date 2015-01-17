@@ -8,7 +8,7 @@ type (
 	BillingPlan struct {
 		ID          string `json:"id,omitempty"`
 		Name        string `json:"name"`
-		Description string `json:"name"`
+		Description string `json:"description"`
 		Type        string `json:"type"` // { 'FIXED', 'INFINITE' }
 		// optional attributes
 		State               string               `json:"state,omitempty"` // { 'CREATED', 'ACTIVE', 'INACTIVE', 'DELETED' }
@@ -32,7 +32,7 @@ type (
 		ReturnURL string `json:"return_url"`
 		CancelURL string `json:"cancel_url"`
 		// optional attributes
-		SetupFee                *Amount `json"setup_fee,omitempty"`
+		SetupFee                *Currency `json:"setup_fee,omitempty"`
 		NotifyURL               string  `json:"notify_url,omitempty"`
 		MaxFailAttempts         string  `json:"max_fail_attempts,omitempty"`
 		AutoBillAmount          string  `json:"auto_bill_amount,omitempty"`           // { 'YES', 'NO' }
@@ -46,17 +46,17 @@ type (
 		Name              string `json:"name"`
 		Type              string `json:"type"`      // { 'REGULAR', 'TRIAL' }
 		Frequency         string `json:"frequency"` // { 'DAY', 'WEEK', 'MONTH', 'YEAR' }
-		Amount            Amount `json:"amount"`
+		Amount            *Currency `json:"amount"`
 		Cycles            string `json:"cycles"`
 		FrequencyInterval string `json:"frequency_interval"`
 		// optional attributes
-		ChargeModels []ChargeModel `json:"charge_models,omitempty"`
+		ChargeModels []*ChargeModel `json:"charge_models,omitempty"`
 	}
 
 	ChargeModel struct {
 		ID     string  `json:"id,omitempty"`
 		Type   string  `json:"type"` //  {'SHIPPING', 'TAX' }
-		Amount *Amount `json:"amount"`
+		Amount *Currency `json:"amount"`
 	}
 
 	OverrideChargeModel struct {

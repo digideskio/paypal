@@ -1,3 +1,13 @@
+// Package paypal defines types and operations used to access the Paypal API
+//
+// Once a Payment is executed it becomes a Sale
+// The following sale operations are defined for Payment:
+//
+// sale: lookup and refund completed payments
+//
+//      GET             /v1/payments/sale/<Transaction-Id>
+//      POST            /v1/payments/sale/<Transaction-Id>/refund
+//
 package paypal
 
 import (

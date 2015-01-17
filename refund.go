@@ -1,3 +1,11 @@
+// Package paypal defines types and operations used to access the Paypal API
+//
+// The following refund operations are defined for Payment:
+//
+// refund: lookup refund details
+//
+//      GET            /v1/payments/refund/<Refund-Id>
+//
 package paypal
 
 import "fmt"

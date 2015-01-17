@@ -1,0 +1,38 @@
+{
+    "name": "White Label Tawk - Monthly",
+    "description": "Custom Tawk Service with customer subdomain and design.",
+    "type": "fixed",
+    "payment_definitions": [
+        {
+            "name": "Regular Payments",
+            "type": "REGULAR",
+            "frequency": "MONTH",
+            "frequency_interval": "2",
+            "amount": {
+                "value": "100",
+                "currency": "USD"
+            },
+            "cycles": "12",
+            "charge_models": [
+                {
+                    "type": "TAX",
+                    "amount": {
+                        "value": "12",
+                        "currency": "USD"
+                    }
+                }
+            ]
+        }
+    ],
+    "merchant_preferences": {
+        "setup_fee": {
+            "value": "1",
+            "currency": "USD"
+        },
+        "return_url": "https://cas.easyrtc.com/billing-plan/success",
+        "cancel_url": "https://cas.easyrtc.com/billing-plan/cancel",
+        "auto_bill_amount": "YES",
+        "initial_fail_amount_action": "CONTINUE",
+        "max_fail_attempts": "0"
+    }
+}

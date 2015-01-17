@@ -1,3 +1,12 @@
+// Package paypal defines types and operations used to access the Paypal API
+//
+// The following capture operations are defined for Payment:
+//
+// capture: lookup and refund captured payments
+//
+//      GET            /v1/payments/capture/<Capture-Id>
+//      POST           /v1/payments/capture/<Capture-Id>/refund
+//
 package paypal
 
 import "fmt"

@@ -1,3 +1,14 @@
+// Package paypal defines types and operations used to access the Paypal API
+//
+// The following authorization operations are defined for Payment:
+//
+// authorization: lookup, capture, reauthorize, and void authorized payments
+//
+//      GET            /v1/payments/authorization/<Authorization-Id>
+//      POST           /v1/payments/authorization/<Authorization-Id>/capture
+//      POST           /v1/payments/authorization/<Authorization-Id>/void
+//      POST           /v1/payments/authorization/<Authorization-Id>/reauthorize
+//
 package paypal
 
 import "fmt"

@@ -1,3 +1,13 @@
+// Package paypal defines types and operations used to access the Paypal API
+//
+// The following payment operations are defined for Payment:
+//
+// payment: create,execute, update and lookup payments
+//
+//      GET, POST       /v1/payments/payment
+//      GET, PATCH      /v1/payments/payment/<Payment-Id>
+//      POST            /v1/payments/payment/<Payment-Id>/execute
+//
 package paypal
 
 import "fmt"

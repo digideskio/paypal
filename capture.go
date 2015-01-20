@@ -22,7 +22,7 @@ func (c *Client) GetCapture(captureID string) (*Capture, error) {
 
 	v := &Capture{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (c *Client) RefundCapture(captureID string, a *Amount) (*Refund, error) {
 
 	v := &Refund{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}

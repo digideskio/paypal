@@ -29,7 +29,7 @@ func (c *Client) GetSale(saleID string) (*Sale, error) {
 
 	v := &Sale{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (c *Client) RefundSale(saleID string, a *Amount) (*Refund, error) {
 
 	v := &Refund{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}

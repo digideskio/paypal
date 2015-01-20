@@ -19,7 +19,7 @@ func (c *Client) GetRefund(refundID string) (*Refund, error) {
 
 	v := &Refund{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}

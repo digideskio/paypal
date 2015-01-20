@@ -42,7 +42,7 @@ func (c *Client) CreateBillingAgreement(p BillingAgreement) (*CreateBillingAgree
 
 	v := &CreateBillingAgreementResp{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *Client) ExecuteBillingAgreement(planID, payerID string, transactions []
 
 	v := &ExecuteBillingAgreementResp{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (c *Client) GetBillingAgreement(id string) (*BillingAgreement, error) {
 
 	v := &BillingAgreement{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (c *Client) ListBillingAgreements(filter map[string]string) ([]BillingAgree
 
 	var v ListBillingAgreementsResp
 
-	err = c.SendWithAuth(req, &v)
+	err = c.SendAndAuth(req, &v)
 	if err != nil {
 		return nil, err
 	}

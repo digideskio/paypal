@@ -36,7 +36,7 @@ func (c *Client) CreateBillingPlan(p *BillingPlan) (*CreateBillingPlanResp, erro
 
 	v := &CreateBillingPlanResp{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (c *Client) ExecuteBillingPlan(planID, payerID string, transactions []Trans
 
 	v := &ExecuteBillingPlanResp{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (c *Client) GetBillingPlan(id string) (*BillingPlan, error) {
 
 	v := &BillingPlan{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (c *Client) ListBillingPlans(filter map[string]string) ([]BillingPlan, erro
 
 	var v ListBillingPlansResp
 
-	err = c.SendWithAuth(req, &v)
+	err = c.SendAndAuth(req, &v)
 	if err != nil {
 		return nil, err
 	}

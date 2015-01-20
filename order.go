@@ -31,7 +31,7 @@ func (c *Client) GetOrder(saleID string) (*Order, error) {
 
 	v := &Order{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}

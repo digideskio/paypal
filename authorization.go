@@ -30,7 +30,7 @@ func (c *Client) GetAuthorization(authID string) (*Authorization, error) {
 
 	v := &Authorization{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *Client) CaptureAuthorization(authID string, a *Amount, isFinalCapture b
 
 	v := &Capture{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (c *Client) VoidAuthorization(authID string) (*Authorization, error) {
 
 	v := &Authorization{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +91,7 @@ func (c *Client) ReauthorizeAuthorization(authID string, a *Amount) (*Authorizat
 
 	v := &Authorization{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}

@@ -39,7 +39,7 @@ func (c *Client) CreatePayment(p Payment) (*CreatePaymentResp, error) {
 
 	v := &CreatePaymentResp{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (c *Client) ExecutePayment(paymentID, payerID string, transactions []Transa
 
 	v := &ExecutePaymentResp{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (c *Client) GetPayment(id string) (*Payment, error) {
 
 	v := &Payment{}
 
-	err = c.SendWithAuth(req, v)
+	err = c.SendAndAuth(req, v)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func (c *Client) ListPayments(filter map[string]string) ([]Payment, error) {
 
 	var v ListPaymentsResp
 
-	err = c.SendWithAuth(req, &v)
+	err = c.SendAndAuth(req, &v)
 	if err != nil {
 		return nil, err
 	}

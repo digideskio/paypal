@@ -22,9 +22,7 @@ type (
 	}
 
 	ExecuteBillingAgreementResp struct {
-		Intent       PaymentIntent `json:"intent"`
-		Payer        *Payer        `json:"payer"`
-		Transactions []Transaction `json:"transactions"`
+		ID string 	`json:"id"`
 		Links        []Links       `json:"links"`
 	}
 
@@ -34,7 +32,7 @@ type (
 )
 
 // CreateBillingAgreement creates a billingagreement in Paypal
-func (c *Client) CreateBillingAgreement(p BillingAgreement) (*CreateBillingAgreementResp, error) {
+func (c *Client) CreateBillingAgreement(p *BillingAgreement) (*CreateBillingAgreementResp, error) {
 	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/billing-agreements", c.APIBase), p)
 	if err != nil {
 		return nil, err

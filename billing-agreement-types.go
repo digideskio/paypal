@@ -6,12 +6,12 @@ import (
 
 type (
 	BillingAgreement struct {
-		ID          string      `json:"idion_type,omitempty"`
+		ID          string      `json:"id,omitempty"`
 		Name        string      `json:"name"`
 		Description string      `json:"description"`
 		StartDate   string      `json:"start_date"`
-		Payer       Payer       `json:"payer"`
-		BillingPlan BillingPlan `json:"plan"`
+		Payer       *Payer       `json:"payer"`
+		BillingPlan *BillingPlan `json:"plan"`
 		// optional attributes
 		ShippingAddress             *Address              `json:"shipping_address,omitempty"`
 		OverrideMerchantPreferences *MerchantPreferences  `json:"override_merchant_preferences,omitempty"`

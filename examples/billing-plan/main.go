@@ -1,7 +1,7 @@
 package main
 
 import (
-    "encoding/json"
+   _ "encoding/json"
     "fmt"
     "log"
     "os"
@@ -22,6 +22,7 @@ func main() {
 
     client := paypal.NewClient(clientID, secret, paypal.APIBaseSandBox)
 
+	/*
     amount := &paypal.Currency{Value: "100", Currency: "USD"}
     setupFee := &paypal.Currency{Value: "1", Currency: "USD"}
     taxAmount := &paypal.Currency{Value: "12.00", Currency: "USD"}
@@ -66,6 +67,12 @@ func main() {
     if err != nil {
         log.Fatal("Could not create billing plan: ", err)
     }
+	*/
 
-    fmt.Println(create)
+    plans, err := client.ListBillingPlans(map[string]string {"status":"ACTIVE"})
+    if err != nil {
+		log.Println(err)
+	}
+
+    fmt.Println(plans)
 }

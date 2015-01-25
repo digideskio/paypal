@@ -7,9 +7,9 @@ import (
 type (
 	BillingPlan struct {
 		ID          string `json:"id,omitempty"`
-		Name        string `json:"name"`
-		Description string `json:"description"`
-		Type        string `json:"type"` // { 'FIXED', 'INFINITE' }
+		Name        string `json:"name,omitempty"`
+		Description string `json:"description,omitempty"`
+		Type        string `json:"type,omitempty"` // { 'FIXED', 'INFINITE' }
 		// optional attributes
 		State               string               `json:"state,omitempty"` // { 'CREATED', 'ACTIVE', 'INACTIVE', 'DELETED' }
 		PaymentDefinitions  []*PaymentDefinition `json:"payment_definitions,omitempty"`

@@ -1,10 +1,17 @@
 package main
 
 import (
+<<<<<<< HEAD
 	_ "encoding/json"
 	_ "fmt"
 	"log"
 	"os"
+=======
+   _ "encoding/json"
+    "fmt"
+    "log"
+    "os"
+>>>>>>> a9d490e3ce4d01fbed1b3b8acefdf0f75e1ee9ba
 
 	"github.com/rmorriso/paypal"
 )
@@ -22,9 +29,16 @@ func main() {
 
 	client := paypal.NewClient(clientID, secret, paypal.APIBaseSandBox)
 
+<<<<<<< HEAD
 	amount := &paypal.Currency{Value: "100", Currency: "USD"}
 	setupFee := &paypal.Currency{Value: "1", Currency: "USD"}
 	taxAmount := &paypal.Currency{Value: "12.00", Currency: "USD"}
+=======
+	/*
+    amount := &paypal.Currency{Value: "100", Currency: "USD"}
+    setupFee := &paypal.Currency{Value: "1", Currency: "USD"}
+    taxAmount := &paypal.Currency{Value: "12.00", Currency: "USD"}
+>>>>>>> a9d490e3ce4d01fbed1b3b8acefdf0f75e1ee9ba
 
 	chargeModels := []*paypal.ChargeModel{
 		&paypal.ChargeModel{
@@ -62,6 +76,7 @@ func main() {
 		MerchantPreferences: merchantPreferences,
 	}
 
+<<<<<<< HEAD
 	// Delete all existing billing plans in CREATED state
 	plans := getPlans(client, map[string]string{"status": "ACTIVE"})
 	removePlans(client, plans)
@@ -97,4 +112,18 @@ func removePlans(client *paypal.Client, plans []paypal.BillingPlan) {
 			log.Println(err)
 		}
 	}
+=======
+    create, err := client.CreateBillingPlan(billingPlan)
+    if err != nil {
+        log.Fatal("Could not create billing plan: ", err)
+    }
+	*/
+
+    plans, err := client.ListBillingPlans(map[string]string {"status":"ACTIVE"})
+    if err != nil {
+		log.Println(err)
+	}
+
+    fmt.Println(plans)
+>>>>>>> a9d490e3ce4d01fbed1b3b8acefdf0f75e1ee9ba
 }

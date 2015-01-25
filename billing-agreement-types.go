@@ -10,7 +10,7 @@ type (
 		Name        string       `json:"name"`
 		Description string       `json:"description"`
 		StartDate   string       `json:"start_date"`
-		Payer       Payer        `json:"payer"`
+		Payer       *Payer       `json:"payer"`
 		BillingPlan *BillingPlan `json:"plan"`
 		// optional attributes
 		ShippingAddress             *Address              `json:"shipping_address,omitempty"`

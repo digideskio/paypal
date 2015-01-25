@@ -1,71 +1,100 @@
 package main
 
 import (
-    "encoding/json"
-    "fmt"
-    "log"
-    "os"
+	_ "encoding/json"
+	_ "fmt"
+	"log"
+	"os"
 
-    "github.com/rmorriso/paypal"
+	"github.com/rmorriso/paypal"
 )
 
 func main() {
-    clientID := os.Getenv("PAYPAL_CLIENTID")
-    if clientID == "" {
-        panic("Paypal clientID is missing")
-    }
+	clientID := os.Getenv("PAYPAL_CLIENTID")
+	if clientID == "" {
+		panic("Paypal clientID is missing")
+	}
 
-    secret := os.Getenv("PAYPAL_SECRET")
-    if secret == "" {
-        panic("Paypal secret is missing")
-    }
+	secret := os.Getenv("PAYPAL_SECRET")
+	if secret == "" {
+		panic("Paypal secret is missing")
+	}
 
-    client := paypal.NewClient(clientID, secret, paypal.APIBaseSandBox)
+	client := paypal.NewClient(clientID, secret, paypal.APIBaseSandBox)
 
-    amount := &paypal.Currency{Value: "100", Currency: "USD"}
-    setupFee := &paypal.Currency{Value: "1", Currency: "USD"}
-    taxAmount := &paypal.Currency{Value: "12.00", Currency: "USD"}
+	amount := &paypal.Currency{Value: "100", Currency: "USD"}
+	setupFee := &paypal.Currency{Value: "1", Currency: "USD"}
+	taxAmount := &paypal.Currency{Value: "12.00", Currency: "USD"}
 
-    chargeModels := []*paypal.ChargeModel{
-         &paypal.ChargeModel{
-              Type: "TAX",
-              Amount: taxAmount,
-         },
-    }
-    paymentDefinitions := []*paypal.PaymentDefinition{
-         &paypal.PaymentDefinition{
-              Name : "Monthly Payments",
-              Type: "REGULAR", 
-              Frequency: "MONTH",
-              FrequencyInterval: "2",
-              Amount: amount, 
-              Cycles: "12", 
-              ChargeModels: chargeModels,
-         },
-    }
+	chargeModels := []*paypal.ChargeModel{
+		&paypal.ChargeModel{
+			Type:   "TAX",
+			Amount: taxAmount,
+		},
+	}
+	paymentDefinitions := []*paypal.PaymentDefinition{
+		&paypal.PaymentDefinition{
+			Name:              "Monthly Payments",
+			Type:              "REGULAR",
+			Frequency:         "MONTH",
+			FrequencyInterval: "2",
+			Amount:            amount,
+			Cycles:            "12",
+			ChargeModels:      chargeModels,
+		},
+	}
 
-    merchantPreferences := &paypal.MerchantPreferences{SetupFee: setupFee, ReturnURL: "https://cas.easyrtc.com/return", CancelURL: "https://cas.easyrtc.com/cancel", AutoBillAmount: "YES", InitialFailAmountAction: "CONTINUE", MaxFailAttempts: "0"}
+	merchantPreferences := &paypal.MerchantPreferences{
+		SetupFee:                setupFee,
+		ReturnURL:               "https://cas.easyrtc.com/api/return",
+		CancelURL:               "https://cas.easyrtc.com/api/cancel",
+		AutoBillAmount:          "YES",
+		InitialFailAmountAction: "CONTINUE",
+		MaxFailAttempts:         "0",
+	}
 
-    billingPlan := &paypal.BillingPlan{
-        Name:   "White Label Tawk Monthly",
-        Description: "White Label Tawk Monthly",
-        Type:"fixed",
-        PaymentDefinitions: paymentDefinitions,
-        MerchantPreferences: merchantPreferences,
-    }
- 
-    bp, err := json.Marshal(billingPlan)
-    if err != nil {
-       log.Printf("Error marshalling billing plan %s\n", err)
-       return
-    }
-  
-    fmt.Printf("Billing Plan: %s\n", bp)
+	billingPlan := &paypal.BillingPlan{
+		Name:                "White Label Tawk Monthly",
+		Description:         "White Label Tawk Monthly",
+		Type:                "fixed",
+		State:               "ACTIVE",
+		PaymentDefinitions:  paymentDefinitions,
+		MerchantPreferences: merchantPreferences,
+	}
 
-    create, err := client.CreateBillingPlan(billingPlan)
-    if err != nil {
-        log.Fatal("Could not create billing plan: ", err)
-    }
+	// Delete all existing billing plans in CREATED state
+	plans := getPlans(client, map[string]string{"status": "ACTIVE"})
+	removePlans(client, plans)
 
-    fmt.Println(create)
+	// Create a billing plan, initial state ACTIVE
+	plan, err := client.CreateBillingPlan(billingPlan)
+	if err != nil {
+		log.Println(err)
+	}
+
+	// Get information on billing plan
+	resp, err := client.GetBillingPlan(plan.ID)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(resp)
+}
+
+func getPlans(client *paypal.Client, filter map[string]string) []paypal.BillingPlan {
+	plans, err := client.ListBillingPlans(filter)
+	if err != nil {
+		log.Println(err)
+	}
+	return plans
+}
+
+func removePlans(client *paypal.Client, plans []paypal.BillingPlan) {
+	patch := []paypal.PatchRequest{
+		paypal.PatchRequest{"/", "replace", map[string]string{"state": "CREATED"}, ""},
+	}
+	for _, p := range plans {
+		if err := client.UpdateBillingPlan(p.ID, patch); err != nil {
+			log.Println(err)
+		}
+	}
 }

@@ -44,29 +44,6 @@ func (c *Client) CreateBillingPlan(p *BillingPlan) (*CreateBillingPlanResp, erro
 	return v, nil
 }
 
-// ExecuteBillingPlan completes an approved Paypal billingplan that has been approved by the payer
-func (c *Client) ExecuteBillingPlan(planID, payerID string, transactions []Transaction) (*ExecuteBillingPlanResp, error) {
-	req, err := NewRequest("POST", fmt.Sprintf("%s/plans/plan/%s/execute", c.APIBase, planID), struct {
-		PayerID      string        `json:"payer_id"`
-		Transactions []Transaction `json:"transactions"`
-	}{
-		payerID,
-		transactions,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	v := &ExecuteBillingPlanResp{}
-
-	err = c.SendAndAuth(req, v)
-	if err != nil {
-		return nil, err
-	}
-
-	return v, nil
-}
-
 // GetBillingPlan fetches a billingplan in Paypal
 func (c *Client) GetBillingPlan(id string) (*BillingPlan, error) {
 	req, err := NewRequest("GET", fmt.Sprintf("%s/payments/billing-plans/%s", c.APIBase, id), nil)
@@ -109,4 +86,17 @@ func (c *Client) ListBillingPlans(filter map[string]string) ([]BillingPlan, erro
 	}
 
 	return v.BillingPlans, nil
+}
+
+func (c *Client) UpdateBillingPlan(id string, patch []PatchRequest) error {
+	req, err := NewRequest("PATCH", fmt.Sprintf("%s/payments/billing-plans/%s", c.APIBase, id), patch)
+	if err != nil {
+		return err
+	}
+
+	err = c.SendAndAuth(req, nil)
+	if err != nil {
+		return err
+	}
+	return nil
 }

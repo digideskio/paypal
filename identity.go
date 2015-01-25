@@ -13,14 +13,12 @@ import (
 	//	"time"
 )
 
-
 // GetUserInfo retrieves user profile data using the AccessToken obtained using GrantToken()
 func (c *Client) GetUserInfo(code string) (*UserInfo, error) {
-        token, err := c.GrantToken(code)
-        if err != nil {
-                log.Fatalf("Error in GrantToken: %s\n", err)
-        }
-        log.Printf("Access Token: %v\n", token)
+	token, err := c.GrantToken(code)
+	if err != nil {
+		log.Println("GrantToken: ", err)
+	}
 
 	req, err := NewRequest("GET", fmt.Sprintf("%s/identity/openidconnect/userinfo", c.APIBase), nil)
 	if err != nil {

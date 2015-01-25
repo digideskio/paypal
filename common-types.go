@@ -25,4 +25,11 @@ type (
 		Enctype string `json:"enctype"`
 		// Schema HyperSchema `json:"schema"`
 	}
+
+	PatchRequest struct {
+		Path  string            `json:"path"`
+		Op    string            `json:"op"`
+		Value map[string]string `json:"value"`
+		From  string            `json:"from,omitempty"`
+	}
 )

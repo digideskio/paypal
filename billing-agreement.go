@@ -14,6 +14,7 @@
 package paypal
 
 import "fmt"
+import "time"
 
 type (
 	CreateBillingAgreementResp struct {
@@ -22,10 +23,18 @@ type (
 	}
 
 	ExecuteBillingAgreementResp struct {
-		Intent       PaymentIntent `json:"intent"`
-		Payer        *Payer        `json:"payer"`
-		Transactions []Transaction `json:"transactions"`
-		Links        []Links       `json:"links"`
+		ID    string
+		Links []Links `json:"links"`
+	}
+
+	GetBillingAgreementResp struct {
+		ID               string            `json:"id"`
+		State            string            `json:"state"`
+		Description      string            `json:"description"`
+		Plan             *BillingPlan      `json:"plan"`
+		Links            []Links           `json:"links"`
+		StartDate        time.Time         `json:"start_date"`
+		AgreementDetails *AgreementDetails `json:"agreement_details"`
 	}
 
 	ListBillingAgreementsResp struct {
@@ -34,7 +43,7 @@ type (
 )
 
 // CreateBillingAgreement creates a billingagreement in Paypal
-func (c *Client) CreateBillingAgreement(p BillingAgreement) (*CreateBillingAgreementResp, error) {
+func (c *Client) CreateBillingAgreement(p *BillingAgreement) (*CreateBillingAgreementResp, error) {
 	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/billing-agreements", c.APIBase), p)
 	if err != nil {
 		return nil, err
@@ -51,14 +60,8 @@ func (c *Client) CreateBillingAgreement(p BillingAgreement) (*CreateBillingAgree
 }
 
 // ExecuteBillingAgreement completes an approved Paypal billingagreement that has been approved by the payer
-func (c *Client) ExecuteBillingAgreement(planID, payerID string, transactions []Transaction) (*ExecuteBillingAgreementResp, error) {
-	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/billing-agreements/%s/execute", c.APIBase, planID), struct {
-		PayerID      string        `json:"payer_id"`
-		Transactions []Transaction `json:"transactions"`
-	}{
-		payerID,
-		transactions,
-	})
+func (c *Client) ExecuteBillingAgreement(token string) (*ExecuteBillingAgreementResp, error) {
+	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/billing-agreements/%s/agreement-execute", c.APIBase, token), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -74,13 +77,13 @@ func (c *Client) ExecuteBillingAgreement(planID, payerID string, transactions []
 }
 
 // GetBillingAgreement fetches a billingagreement in Paypal
-func (c *Client) GetBillingAgreement(id string) (*BillingAgreement, error) {
+func (c *Client) GetBillingAgreement(id string) (*GetBillingAgreementResp, error) {
 	req, err := NewRequest("GET", fmt.Sprintf("%s/payments/billing-agreements/%s", c.APIBase, id), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	v := &BillingAgreement{}
+	v := &GetBillingAgreementResp{}
 
 	err = c.SendAndAuth(req, v)
 	if err != nil {

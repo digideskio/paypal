@@ -20,7 +20,6 @@ const (
 )
 
 type (
-
 	// Client represents a Paypal REST API Client
 	Client struct {
 		client   *http.Client
@@ -253,6 +252,8 @@ func (c *Client) SendAndAuth(req *http.Request, v interface{}) error {
 		c.Token = resp
 	}
 	req.Header.Set("Authorization", "Bearer "+c.Token.AccessToken)
+
+	log.Printf("Sending with Bearer token: %s\n", c.Token.AccessToken)
 
 	return c.Send(req, v)
 }

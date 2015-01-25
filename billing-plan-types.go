@@ -7,16 +7,16 @@ import (
 type (
 	BillingPlan struct {
 		ID          string `json:"id,omitempty"`
-		Name        string `json:"name"`
-		Description string `json:"description"`
-		Type        string `json:"type"` // { 'FIXED', 'INFINITE' }
+		Name        string `json:"name,omitempty"`
+		Description string `json:"description,omitempty"`
+		Type        string `json:"type,omitempty"` // { 'FIXED', 'INFINITE' }
 		// optional attributes
 		State               string               `json:"state,omitempty"` // { 'CREATED', 'ACTIVE', 'INACTIVE', 'DELETED' }
 		PaymentDefinitions  []*PaymentDefinition `json:"payment_definitions,omitempty"`
 		Terms               []Terms              `json:"terms,omitempty"`
 		MerchantPreferences *MerchantPreferences `json:"merchant_preferences,omitempty"`
-		CreateTime          *time.Time           `json:"createTime,omitempty"` // YYYY-MM-DDTimeTimezone, as defined in [ISO8601](http://tools.ietf.org/html/rfc3339#section-5.6).
-		UpdateTime          *time.Time           `json:"updateTime,omitempty"` // YYYY-MM-DDTimeTimezone, as defined in [ISO8601](http://tools.ietf.org/html/rfc3339#section-5.6).
+		CreateTime          *time.Time           `json:"create_time,omitempty"` // YYYY-MM-DDTimeTimezone, as defined in [ISO8601](http://tools.ietf.org/html/rfc3339#section-5.6).
+		UpdateTime          *time.Time           `json:"update_time,omitempty"` // YYYY-MM-DDTimeTimezone, as defined in [ISO8601](http://tools.ietf.org/html/rfc3339#section-5.6).
 		Links               []*Links             `json:"links,omitempty"`
 	}
 
@@ -33,29 +33,29 @@ type (
 		CancelURL string `json:"cancel_url"`
 		// optional attributes
 		SetupFee                *Currency `json:"setup_fee,omitempty"`
-		NotifyURL               string  `json:"notify_url,omitempty"`
-		MaxFailAttempts         string  `json:"max_fail_attempts,omitempty"`
-		AutoBillAmount          string  `json:"auto_bill_amount,omitempty"`           // { 'YES', 'NO' }
-		InitialFailAmountAction string  `json:"initial_fail_amount_action,omitempty"` // { 'CONTINUE' }
-		AcceptedPaymentType     string  `json:"accepted_payment_type,omitempty"`
-		CharSet                 string  `json:"charset,omitempty"`
+		NotifyURL               string    `json:"notify_url,omitempty"`
+		MaxFailAttempts         string    `json:"max_fail_attempts,omitempty"`
+		AutoBillAmount          string    `json:"auto_bill_amount,omitempty"`           // { 'YES', 'NO' }
+		InitialFailAmountAction string    `json:"initial_fail_amount_action,omitempty"` // { 'CONTINUE' }
+		AcceptedPaymentType     string    `json:"accepted_payment_type,omitempty"`
+		CharSet                 string    `json:"charset,omitempty"`
 	}
 
 	PaymentDefinition struct {
-		ID                string `json:"id,omitempty"`
-		Name              string `json:"name"`
-		Type              string `json:"type"`      // { 'REGULAR', 'TRIAL' }
-		Frequency         string `json:"frequency"` // { 'DAY', 'WEEK', 'MONTH', 'YEAR' }
+		ID                string    `json:"id,omitempty"`
+		Name              string    `json:"name"`
+		Type              string    `json:"type"`      // { 'REGULAR', 'TRIAL' }
+		Frequency         string    `json:"frequency"` // { 'DAY', 'WEEK', 'MONTH', 'YEAR' }
 		Amount            *Currency `json:"amount"`
-		Cycles            string `json:"cycles"`
-		FrequencyInterval string `json:"frequency_interval"`
+		Cycles            string    `json:"cycles"`
+		FrequencyInterval string    `json:"frequency_interval"`
 		// optional attributes
 		ChargeModels []*ChargeModel `json:"charge_models,omitempty"`
 	}
 
 	ChargeModel struct {
-		ID     string  `json:"id,omitempty"`
-		Type   string  `json:"type"` //  {'SHIPPING', 'TAX' }
+		ID     string    `json:"id,omitempty"`
+		Type   string    `json:"type"` //  {'SHIPPING', 'TAX' }
 		Amount *Currency `json:"amount"`
 	}
 

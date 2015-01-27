@@ -31,7 +31,7 @@ type (
 		ID               string            `json:"id"`
 		State            string            `json:"state"`
 		Description      string            `json:"description"`
-		Plan             *BillingPlan      `json:"plan"`
+		BillingPlan      *BillingPlan      `json:"plan"`
 		Links            []Links           `json:"links"`
 		StartDate        time.Time         `json:"start_date"`
 		AgreementDetails *AgreementDetails `json:"agreement_details"`

@@ -47,8 +47,8 @@ type (
 	}
 
 	AgreementStateDescriptor struct {
-		Note   string `json:"note,omitempty"`
-		Amount Amount `json:"amount,omitempty"`
+		Note   string    `json:"note,omitempty"`
+		Amount *Currency `json:"amount,omitempty"`
 	}
 
 	AgreementTransactionList struct {

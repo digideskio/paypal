@@ -76,7 +76,7 @@ func (c *Client) ExecuteBillingAgreement(token string) (*ExecuteBillingAgreement
 	return v, nil
 }
 
-// GetBillingAgreement fetches a billingagreement in Paypal
+// GetBillingAgreement fetches a billingagreement in Paypal.
 func (c *Client) GetBillingAgreement(id string) (*GetBillingAgreementResp, error) {
 	req, err := NewRequest("GET", fmt.Sprintf("%s/payments/billing-agreements/%s", c.APIBase, id), nil)
 	if err != nil {
@@ -93,29 +93,46 @@ func (c *Client) GetBillingAgreement(id string) (*GetBillingAgreementResp, error
 	return v, nil
 }
 
-// ListBillingAgreements retrieve billingagreements resources from Paypal
-func (c *Client) ListBillingAgreements(filter map[string]string) ([]BillingAgreement, error) {
-	req, err := NewRequest("GET", fmt.Sprintf("%s/payments/billing-agreements/", c.APIBase), nil)
+// UpdateBillingAgreement updates a billing agreement.
+func (c *Client) UpdateBillingAgreement(id string, patch []PatchRequest) error {
+	req, err := NewRequest("PATCH", fmt.Sprintf("%s/payments/billing-agreements/%s", c.APIBase, id), patch)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if filter != nil {
-		q := req.URL.Query()
-
-		for k, v := range filter {
-			q.Set(k, v)
-		}
-
-		req.URL.RawQuery = q.Encode()
-	}
-
-	var v ListBillingAgreementsResp
-
-	err = c.SendAndAuth(req, &v)
+	err = c.SendAndAuth(req, nil)
 	if err != nil {
-		return nil, err
+		return err
+	}
+	return nil
+}
+
+// SuspendBillingAgreement suspends a billing agreement.
+func (c *Client) SuspendBillingAgreement(id string, descr *AgreementStateDescriptor) error {
+	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/billing-agreements/%s/suspend", c.APIBase, id), descr)
+	if err != nil {
+		return err
 	}
 
-	return v.BillingAgreements, nil
+	err = c.SendAndAuth(req, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ReactivateBillingAgreement re-activates a suspended billing agreement.
+func (c *Client) ReactivateBillingAgreement(id string, descr *AgreementStateDescriptor) error {
+	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/billing-agreements/%s/re-activate", c.APIBase, id), descr)
+	if err != nil {
+		return err
+	}
+
+	err = c.SendAndAuth(req, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

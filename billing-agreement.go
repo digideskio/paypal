@@ -122,6 +122,21 @@ func (c *Client) SuspendBillingAgreement(id string, descr *AgreementStateDescrip
 	return nil
 }
 
+// CancelBillingAgreement cancel a billing agreement.
+func (c *Client) CancelBillingAgreement(id string, descr *AgreementStateDescriptor) error {
+	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/billing-agreements/%s/cancel", c.APIBase, id), descr)
+	if err != nil {
+		return err
+	}
+
+	err = c.SendAndAuth(req, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // ReactivateBillingAgreement re-activates a suspended billing agreement.
 func (c *Client) ReactivateBillingAgreement(id string, descr *AgreementStateDescriptor) error {
 	req, err := NewRequest("POST", fmt.Sprintf("%s/payments/billing-agreements/%s/re-activate", c.APIBase, id), descr)

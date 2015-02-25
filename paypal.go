@@ -82,6 +82,19 @@ func NewClient(clientID, secret, APIBase string) *Client {
 	}
 }
 
+// NewClientWithTransport returns a new Client struct with http.Client configured to use a provided http.Transport
+func NewClientWithTransport(clientID, secret, APIBase string, transport *http.Transport) *Client {
+	paypalClient := &Client{
+		&http.Client{},
+		clientID,
+		secret,
+		APIBase,
+		nil,
+	}
+	paypalClient.client.Transport = transport
+	return paypalClient
+}
+
 // NewRequest constructs a request. If payload is not empty, it will be
 // marshalled into JSON
 func NewRequest(method, url string, payload interface{}) (*http.Request, error) {
